@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Taraaweeh Rakaat Tracker</title>
+<style>
+:root{
+  --bg:#0b1c2d;
+  --card:#10263d;
+  --section:#163a5c;
+  --gold:#d4af37;
+  --text:#f5f7fa;
+  --muted:#9fb3c8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(135deg,#0b1c2d,#132f4c);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+}
+.card{
+  background:var(--card);
+  width:100%;
+  max-width:700px;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 15px 35px rgba(0,0,0,.4);
+}
+h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
+.subtitle{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:14px}
+.progress-text{text-align:center;font-size:.9rem;margin-bottom:8px}
+.progress-bar{
+  height:6px;background:#1d3a56;border-radius:6px;overflow:hidden;margin-bottom:18px;
+}
+.progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--gold),#f0d777);
+  transition:width .3s ease;
+}
+.section{
+  margin-bottom:16px;
+  background:var(--section);
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.35);
+  overflow:hidden;
+}
+.section-header{
+  padding:10px 14px;
+  font-size:.85rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+.section-header.completed{
+  color:var(--gold);
+}
+.section-content{
+  padding:14px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-bottom:10px;
+}
+.rakaat{
+  padding:10px 0;
+  border-radius:8px;
+  border:1px solid #274b6e;
+  background:#1c466d;
+  color:var(--text);
+  font-size:.85rem;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.rakaat.completed{
+  background:var(--gold);
+  color:#0b1c2d;
+  box-shadow:0 0 8px rgba(212,175,55,.6);
+}
+.dua{
+  font-size:.85rem;
+  line-height:1.6;
+  margin-top:6px;
+}
+.dua .arabic{
+  direction:rtl;
+  font-size:1rem;
+  margin-bottom:8px;
+  color:#fff;
+}
+details{
+  margin-top:6px;
+  font-size:.8rem;
+  color:var(--muted);
+}
+details summary{
+  cursor:pointer;
+  color:var(--gold);
+  margin-bottom:4px;
+}
+.section.collapsed .section-content{
+  display:none;
+}
+button.reset{
+  width:100%;
+  margin-top:8px;
+  background:none;
+  border:1px solid var(--muted);
+  color:var(--muted);
+  padding:8px;
+  border-radius:8px;
+  font-size:.8rem;
+  cursor:pointer;
+}
+button.reset:hover{border-color:var(--gold);color:var(--gold)}
+@media(max-width:480px){
+  .dua .arabic{font-size:.95rem}
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Taraaweeh Rakaat Tracker</h1>
+  <div class="subtitle">Tap each set of 2 rakaats as you complete them</div>
+
+  <div class="progress-text" id="progressText">0 / 20 completed</div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div id="container"></div>
+  <button class="reset" id="resetBtn">Reset All</button>
+</div>
+
+<script>
+const totalUnits=10; // 10 sets of 2 = 20 rakaats
+const perSection=2; // 2 buttons (2+2)
+const container=document.getElementById("container");
+const progressText=document.getElementById("progressText");
+const progressFill=document.getElementById("progressFill");
+let state=JSON.parse(localStorage.getItem("rakaatState"))||Array(totalUnits).fill(false);
+
+function save(){localStorage.setItem("rakaatState",JSON.stringify(state));}
+function updateProgress(){
+  const doneUnits=state.filter(Boolean).length;
+  const doneRakaats=doneUnits*2;
+  progressText.textContent=doneRakaats+" / 20 completed";
+  progressFill.style.width=(doneRakaats/20*100)+"%";
+}
+
+function create(){
+  for(let s=0;s<totalUnits/perSection;s++){
+    const section=document.createElement("div");
+    section.className="section";
+
+    const header=document.createElement("div");
+    header.className="section-header";
+    header.innerHTML=`<span>Rakaats ${s*4+1}–${s*4+4}</span><span>▼</span>`;
+    header.onclick=()=>{ if(section.classList.contains("completed")) section.classList.toggle("collapsed"); };
+    section.appendChild(header);
+
+    const content=document.createElement("div");
+    content.className="section-content";
+
+    const grid=document.createElement("div");
+    grid.className="grid";
+
+    for(let i=0;i<perSection;i++){
+      const index=s*perSection+i;
+      const btn=document.createElement("button");
+      btn.className="rakaat";
+      btn.textContent="2";
+      btn.onclick=()=>{
+        state[index]=!state[index];
+        btn.classList.toggle("completed",state[index]);
+        checkSection(section,s);
+        save();
+        updateProgress();
+      };
+      grid.appendChild(btn);
+    }
+    content.appendChild(grid);
+
+    const dua=document.createElement("div");
+    dua.className="dua";
+    dua.innerHTML=`
+      <div class="arabic">
+      سُبْحَانَ ذِي المُلْكِ وَالمَلَكُوتِ سُبْحَانَ ذِي العِزَّتِ وَالعَظَمَةِ وَالهَيْبَةِ وَالقُدْرَةِ<br>
+      وَالكِبْرِيَاءِ وَالجَبَرُوتِ سُبْحَانَ المَلِكِ الحَيِّ الَّذِي لَا يَنَامُ وَلَا يَمُوتُ سُبُّوحٌ قُدُّوسٌ<br>
+      رَبُّنَا وَرَبُّ المَلَآءِكَةِ وَالرُّوحِ اَلَّلهُمَّ اَجِرْنَا مِنَ النَّارِ يَا مُجِيرُ يَا مُجِيرُ يَا مُجِير 
+      </div>
+      <details>
+        <summary>Show Translation</summary>
+        <div>
+        Infinite Glory be to the Absolute Lord of the hidden and manifest (existential realities of the trans-universal system); infinite Glory be to the Lord of all rank and respectability, and all the reverence, and all the awe and inspiration, and omnipotence, and all mightiness, and absolute Majesty; infinite Glory be to the Commander of all that is living; the One Who is beyond sleep and cannot expire in any way; the One Who is All Praiseworthy, Infinitely Sanctified; our Sustainer and the Sustainer of the Angels and the spiritual intelligence (transmitted by light); O Allah (Almighty) grant us refuge from (the punishment of) the Fire; O Ultimate Grantor of refuge, O Ultimate Grantor of refuge, O Ultimate Grantor of refuge.
+        </div>
+      </details>
+    `;
+    content.appendChild(dua);
+
+    section.appendChild(content);
+    container.appendChild(section);
+  }
+}
+
+function checkSection(section,s){
+  const start=s*perSection;
+  const complete=state.slice(start,start+perSection).every(Boolean);
+  const header=section.querySelector(".section-header");
+  if(complete){
+    section.classList.add("collapsed","completed");
+    header.classList.add("completed");
+  }else{
+    section.classList.remove("completed");
+    header.classList.remove("completed");
+  }
+}
+
+document.getElementById("resetBtn").onclick=()=>{
+  state=Array(totalUnits).fill(false);
+  save();
+  location.reload();
+};
+
+create();
+document.querySelectorAll(".rakaat").forEach((btn,i)=>{
+  if(state[i])btn.classList.add("completed");
+});
+document.querySelectorAll(".section").forEach((sec,i)=>checkSection(sec,i));
+updateProgress();
+</script>
+</body>
+</html>
