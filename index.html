@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Taraaweeh Rakaat Tracker</title>
+
 <style>
 :root{
   --bg:#0b1c2d;
@@ -13,7 +14,9 @@
   --text:#f5f7fa;
   --muted:#9fb3c8;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
   font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:linear-gradient(135deg,#0b1c2d,#132f4c);
@@ -24,14 +27,16 @@ body{
   justify-content:center;
   padding:14px;
 }
+
 .card{
   background:var(--card);
   width:100%;
-  max-width:700px;
+  max-width:720px;
   padding:20px;
   border-radius:16px;
   box-shadow:0 15px 35px rgba(0,0,0,.4);
 }
+
 .version{
   text-align:center;
   font-size:.7rem;
@@ -39,93 +44,39 @@ body{
   margin-bottom:6px;
   font-style:italic;
 }
+
 h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
-.subtitle{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:14px}
-.progress-text{text-align:center;font-size:.9rem;margin-bottom:8px}
-.progress-bar{
-  height:6px;background:#1d3a56;border-radius:6px;overflow:hidden;margin-bottom:18px;
-}
-.progress-fill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,var(--gold),#f0d777);
-  transition:width .3s ease;
-}
-.section{
-  margin-bottom:16px;
-  background:var(--section);
-  border:1px solid rgba(212,175,55,.4);
-  border-radius:14px;
-  box-shadow:0 8px 20px rgba(0,0,0,.35);
-  overflow:hidden;
-}
-.section-header{
-  padding:10px 14px;
-  font-size:.85rem;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-}
-.section-header.completed{
-  color:var(--gold);
-}
-.section-content{
-  padding:14px;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-  margin-bottom:10px;
-}
-.rakaat{
-  padding:10px 0;
-  border-radius:8px;
-  border:1px solid #274b6e;
-  background:#1c466d;
-  color:var(--text);
-  font-size:.85rem;
-  cursor:pointer;
-  transition:all .2s ease;
-}
-.rakaat.completed{
-  background:var(--gold);
-  color:#0b1c2d;
-  box-shadow:0 0 8px rgba(212,175,55,.6);
-}
-.dua-title{
-  font-size:.85rem;
-  font-weight:500;
-  margin-top:8px;
-  color:var(--gold);
-}
-.dua{
-  font-size:.85rem;
-  line-height:1.6;
-  margin-top:6px;
-}
-.dua .arabic{
-  direction:rtl;
-  font-size:1rem;
-  margin-bottom:8px;
-  color:#fff;
-}
-details{
-  margin-top:6px;
-  font-size:.8rem;
+
+.subtitle{
+  text-align:center;
   color:var(--muted);
+  font-size:.85rem;
+  margin-bottom:14px;
 }
-details summary{
-  cursor:pointer;
-  color:var(--gold);
-  margin-bottom:4px;
+
+/* Top Controls */
+.top-controls{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
 }
-.section.collapsed .section-content{
-  display:none;
-}
-button.reset{
+
+.top-controls button{
+  flex:1;
   width:100%;
-  margin-top:8px;
+}
+
+.toggle-mode{
+  background:none;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:8px;
+  border-radius:8px;
+  font-size:.8rem;
+  cursor:pointer;
+}
+
+.reset-top{
   background:none;
   border:1px solid var(--muted);
   color:var(--muted);
@@ -134,123 +85,278 @@ button.reset{
   font-size:.8rem;
   cursor:pointer;
 }
-button.reset:hover{border-color:var(--gold);color:var(--gold)}
+
+.reset-top:hover{
+  border-color:var(--gold);
+  color:var(--gold);
+}
+
+.progress-text{
+  text-align:center;
+  font-size:.9rem;
+  margin-bottom:8px;
+}
+
+.progress-bar{
+  height:6px;
+  background:#1d3a56;
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--gold),#f0d777);
+  transition:width .3s ease;
+}
+
+/* Sections */
+.section{
+  margin-bottom:16px;
+  background:var(--section);
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.35);
+  overflow:hidden;
+}
+
+.section-header{
+  padding:10px 14px;
+  font-size:.85rem;
+}
+
+.section-content{
+  padding:14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.rakaat{
+  padding:10px 0;
+  border-radius:8px;
+  border:1px solid #274b6e;
+  background:#1c466d;
+  color:var(--text);
+  font-size:.85rem;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.rakaat.completed{
+  background:var(--gold);
+  color:#0b1c2d;
+  box-shadow:0 0 8px rgba(212,175,55,.6);
+}
+
+/* Dua */
+.dua-title{
+  font-size:.85rem;
+  margin-top:8px;
+  color:var(--gold);
+}
+
+.dua{
+  font-size:.85rem;
+  line-height:1.6;
+  margin-top:6px;
+}
+
+.dua .arabic{
+  direction:rtl;
+  font-size:1rem;
+  margin-bottom:8px;
+  color:#fff;
+}
+
+details{
+  margin-top:6px;
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+details summary{
+  cursor:pointer;
+  color:var(--gold);
+  margin-bottom:4px;
+}
+
+/* Simple Mode */
+.simple-mode{text-align:center;}
+
+#simpleDuaContainer{
+  min-height:220px; /* prevents jumping */
+}
+
+.simple-button{
+  margin:14px 0;
+  padding:14px;
+  width:100%;
+  font-size:1rem;
+  border-radius:10px;
+  border:none;
+  background:var(--gold);
+  color:#0b1c2d;
+  cursor:pointer;
+}
+
+.hidden{display:none;}
 </style>
 </head>
+
 <body>
 <div class="card">
-  <div class="version">Version 1.1.0</div>
+  <div class="version">Version 1.3.0</div>
   <h1>Taraaweeh Rakaat Tracker</h1>
-  <div class="subtitle">Tap each set of 2 rakaats as you complete them</div>
+  <div class="subtitle">Track your 20 rakaats of Taraweeh</div>
+
+  <div class="top-controls">
+    <button class="toggle-mode" id="toggleMode">Switch to Simple Mode</button>
+    <button class="reset-top" id="resetBtn">Reset</button>
+  </div>
 
   <div class="progress-text" id="progressText">0 / 20 completed</div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
 
-  <div id="container"></div>
-  <button class="reset" id="resetBtn">Reset All</button>
+  <div id="sectionMode"></div>
+
+  <div id="simpleMode" class="simple-mode hidden">
+    <button class="simple-button" id="prayTwoBtn">I've prayed 2</button>
+    <div id="simpleDuaContainer"></div>
+  </div>
 </div>
 
 <script>
-const totalUnits=10;
-const perSection=2;
-const container=document.getElementById("container");
+const totalRakaats=20;
+let state=JSON.parse(localStorage.getItem("rakaatState"))||Array(10).fill(false);
+let simpleCount=JSON.parse(localStorage.getItem("simpleCount"))||0;
+let currentMode=localStorage.getItem("mode")||"section";
+
 const progressText=document.getElementById("progressText");
 const progressFill=document.getElementById("progressFill");
-let state=JSON.parse(localStorage.getItem("rakaatState"))||Array(totalUnits).fill(false);
+const sectionMode=document.getElementById("sectionMode");
+const simpleMode=document.getElementById("simpleMode");
+const toggleMode=document.getElementById("toggleMode");
+const simpleDuaContainer=document.getElementById("simpleDuaContainer");
 
-function save(){localStorage.setItem("rakaatState",JSON.stringify(state));}
-function updateProgress(){
-  const doneUnits=state.filter(Boolean).length;
-  const doneRakaats=doneUnits*2;
-  progressText.textContent=doneRakaats+" / 20 completed";
-  progressFill.style.width=(doneRakaats/20*100)+"%";
+const duaHTML=`<div class="dua-title">Dua (to be prayed after every 4 rakaats of Taraweeh)</div>
+<div class="dua">
+<div class="arabic">
+سُبْحَانَ ذِي المُلْكِ وَالمَلَكُوتِ سُبْحَانَ ذِي العِزَّتِ وَالعَظَمَةِ وَالهَيْبَةِ وَالقُدْرَةِ<br>
+وَالكِبْرِيَاءِ وَالجَبَرُوتِ سُبْحَانَ المَلِكِ الحَيِّ الَّذِي لَا يَنَامُ وَلَا يَمُوتُ سُبُّوحٌ قُدُّوسٌ<br>
+رَبُّنَا وَرَبُّ المَلَآءِكَةِ وَالرُّوحِ اَلَّلهُمَّ اَجِرْنَا مِنَ النَّارِ يَا مُجِيرُ يَا مُجِيرُ يَا مُجِير 
+</div>
+<details>
+<summary>Show Translation</summary>
+<div>
+Infinite Glory be to the Absolute Lord of the hidden and manifest (existential realities of the trans-universal system); infinite Glory be to the Lord of all rank and respectability, and all the reverence, and all the awe and inspiration, and omnipotence, and all mightiness, and absolute Majesty; infinite Glory be to the Commander of all that is living; the One Who is beyond sleep and cannot expire in any way; the One Who is All Praiseworthy, Infinitely Sanctified; our Sustainer and the Sustainer of the Angels and the spiritual intelligence (transmitted by light); O Allah (Almighty) grant us refuge from (the punishment of) the Fire; O Ultimate Grantor of refuge, O Ultimate Grantor of refuge, O Ultimate Grantor of refuge.
+</div>
+</details>
+</div>`;
+
+function updateProgress(count){
+  progressText.textContent=count+" / 20 completed";
+  progressFill.style.width=(count/20*100)+"%";
 }
 
-function create(){
-  for(let s=0;s<totalUnits/perSection;s++){
+function renderSections(){
+  sectionMode.innerHTML="";
+  for(let i=0;i<5;i++){
+    const doneInSection=(state[i*2]?1:0)+(state[i*2+1]?1:0);
+    const doneRakaats=doneInSection*2;
+
     const section=document.createElement("div");
     section.className="section";
 
-    const header=document.createElement("div");
-    header.className="section-header";
-    header.innerHTML=`<span>Rakaats ${s*4+1}–${s*4+4}</span><span>▼</span>`;
-    header.onclick=()=>{ if(section.classList.contains("completed")) section.classList.toggle("collapsed"); };
-    section.appendChild(header);
-
+    section.innerHTML=`<div class="section-header">Rakaats ${i*4+1}–${i*4+4}</div>`;
     const content=document.createElement("div");
     content.className="section-content";
-
     const grid=document.createElement("div");
     grid.className="grid";
 
-    for(let i=0;i<perSection;i++){
-      const index=s*perSection+i;
+    for(let j=0;j<2;j++){
+      const index=i*2+j;
       const btn=document.createElement("button");
       btn.className="rakaat";
       btn.textContent="2";
+      if(state[index])btn.classList.add("completed");
       btn.onclick=()=>{
         state[index]=!state[index];
-        btn.classList.toggle("completed",state[index]);
-        checkSection(section,s);
-        save();
-        updateProgress();
+        localStorage.setItem("rakaatState",JSON.stringify(state));
+        renderSections();
       };
       grid.appendChild(btn);
     }
+
     content.appendChild(grid);
 
-    const duaTitle=document.createElement("div");
-    duaTitle.className="dua-title";
-    duaTitle.textContent="Dua (to be prayed after every 4 rakaats of Taraweeh)";
-    content.appendChild(duaTitle);
-
-    const dua=document.createElement("div");
-    dua.className="dua";
-    dua.innerHTML=`
-      <div class="arabic">
-      سُبْحَانَ ذِي المُلْكِ وَالمَلَكُوتِ سُبْحَانَ ذِي العِزَّتِ وَالعَظَمَةِ وَالهَيْبَةِ وَالقُدْرَةِ<br>
-      وَالكِبْرِيَاءِ وَالجَبَرُوتِ سُبْحَانَ المَلِكِ الحَيِّ الَّذِي لَا يَنَامُ وَلَا يَمُوتُ سُبُّوحٌ قُدُّوسٌ<br>
-      رَبُّنَا وَرَبُّ المَلَآءِكَةِ وَالرُّوحِ اَلَّلهُمَّ اَجِرْنَا مِنَ النَّارِ يَا مُجِيرُ يَا مُجِيرُ يَا مُجِير 
-      </div>
-      <details>
-        <summary>Show Translation</summary>
-        <div>
-        Infinite Glory be to the Absolute Lord of the hidden and manifest (existential realities of the trans-universal system); infinite Glory be to the Lord of all rank and respectability, and all the reverence, and all the awe and inspiration, and omnipotence, and all mightiness, and absolute Majesty; infinite Glory be to the Commander of all that is living; the One Who is beyond sleep and cannot expire in any way; the One Who is All Praiseworthy, Infinitely Sanctified; our Sustainer and the Sustainer of the Angels and the spiritual intelligence (transmitted by light); O Allah (Almighty) grant us refuge from (the punishment of) the Fire; O Ultimate Grantor of refuge, O Ultimate Grantor of refuge, O Ultimate Grantor of refuge.
-        </div>
-      </details>
-    `;
-    content.appendChild(dua);
+    if(doneRakaats===4){
+      content.insertAdjacentHTML("beforeend",duaHTML);
+    }
 
     section.appendChild(content);
-    container.appendChild(section);
+    sectionMode.appendChild(section);
   }
+
+  updateProgress(state.filter(Boolean).length*2);
 }
 
-function checkSection(section,s){
-  const start=s*perSection;
-  const complete=state.slice(start,start+perSection).every(Boolean);
-  const header=section.querySelector(".section-header");
-  if(complete){
-    section.classList.add("collapsed","completed");
-    header.classList.add("completed");
+document.getElementById("prayTwoBtn").onclick=()=>{
+  if(simpleCount<20){
+    simpleCount+=2;
+    localStorage.setItem("simpleCount",simpleCount);
+    updateProgress(simpleCount);
+
+    if(simpleCount%4===0){
+      simpleDuaContainer.innerHTML=duaHTML;
+    }else{
+      simpleDuaContainer.innerHTML="";
+    }
+  }
+};
+
+toggleMode.onclick=()=>{
+  currentMode=currentMode==="section"?"simple":"section";
+  localStorage.setItem("mode",currentMode);
+  applyMode();
+};
+
+function applyMode(){
+  if(currentMode==="simple"){
+    sectionMode.classList.add("hidden");
+    simpleMode.classList.remove("hidden");
+    toggleMode.textContent="Switch to Section Mode";
+    updateProgress(simpleCount);
   }else{
-    section.classList.remove("completed");
-    header.classList.remove("completed");
+    sectionMode.classList.remove("hidden");
+    simpleMode.classList.add("hidden");
+    toggleMode.textContent="Switch to Simple Mode";
+    renderSections();
   }
 }
 
 document.getElementById("resetBtn").onclick=()=>{
-  state=Array(totalUnits).fill(false);
-  save();
-  location.reload();
+  if(currentMode==="simple"){
+    simpleCount=0;
+    localStorage.setItem("simpleCount",0);
+    simpleDuaContainer.innerHTML="";
+    updateProgress(0);
+  }else{
+    state=Array(10).fill(false);
+    localStorage.setItem("rakaatState",JSON.stringify(state));
+    renderSections();
+  }
 };
 
-create();
-document.querySelectorAll(".rakaat").forEach((btn,i)=>{
-  if(state[i])btn.classList.add("completed");
-});
-document.querySelectorAll(".section").forEach((sec,i)=>checkSection(sec,i));
-updateProgress();
+applyMode();
 </script>
 </body>
 </html>
