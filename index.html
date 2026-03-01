@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Taraaweeh Rakaat Tracker</title>
+<link rel="icon" type="image/png" href="TaraaweehCounterLogo.png" />
+<link rel="apple-touch-icon" href="TaraaweehCounterLogo.png" />
 
 <style>
 :root{
@@ -281,12 +283,31 @@ details summary{
 }
 
 .modal-close:hover{color:var(--gold);}
+
+/* Footer */
+.footer{
+  margin-top:20px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.07);
+  text-align:center;
+  font-size:.75rem;
+  color:var(--muted);
+}
+
+.footer a{
+  color:var(--gold);
+  text-decoration:none;
+}
+
+.footer a:hover{
+  text-decoration:underline;
+}
 </style>
 </head>
 
 <body>
 <div class="card">
-  <div class="version">Version 1.4.0</div>
+  <div class="version">Version 1.4.2</div>
   <h1>Taraaweeh Rakaat Counter</h1>
   <div class="subtitle">Track your 20 rakaats of Taraweeh</div>
 
@@ -313,6 +334,10 @@ details summary{
   <div class="simple-mode">
     <button class="simple-button" id="prayTwoBtn">I've prayed 2</button>
     <div id="simpleDuaContainer"></div>
+  </div>
+
+  <div class="footer">
+    Created by <a href="https://amanahdigital.co.uk" target="_blank" rel="noopener">AmanahDigital1447</a>
   </div>
 </div>
 
