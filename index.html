@@ -6,23 +6,44 @@
 <title>Taraaweeh Rakaat Tracker</title>
 <link rel="icon" type="image/png" href="TaraaweehCounterLogo.png" />
 <link rel="apple-touch-icon" href="TaraaweehCounterLogo.png" />
+<link href="https://fonts.googleapis.com/css2?family=Lateef:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#0b1c2d;
-  --card:#10263d;
-  --section:#163a5c;
-  --gold:#d4af37;
-  --text:#f5f7fa;
-  --muted:#9fb3c8;
+  --bg-void:        #080610;
+  --bg-surface:     #0e0c1a;
+  --bg-elevated:    #14112a;
+  --gold:           #F5C97A;
+  --gold-mid:       #C8884A;
+  --gold-glow:      rgba(245,201,122,0.12);
+  --text-primary:   #e8e0d8;
+  --text-muted:     rgba(232,224,216,0.45);
+  --text-faint:     rgba(232,224,216,0.25);
+  --border-subtle:  rgba(255,255,255,0.06);
+  --border-mid:     rgba(255,255,255,0.10);
+  --border-gold:    rgba(245,201,122,0.25);
+  --font-arabic:    'Lateef', serif;
+  --font-display:   'Crimson Pro', serif;
+  --font-body:      'Inter', system-ui, sans-serif;
+  --font-mono:      'DM Mono', monospace;
+  --shadow-gold:    0 0 40px rgba(245,201,122,0.08);
+  --shadow-card:    0 4px 24px rgba(0,0,0,0.4);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:linear-gradient(135deg,#0b1c2d,#132f4c);
-  color:var(--text);
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  background:var(--bg-void);
+  background-image:
+    repeating-linear-gradient(60deg,  transparent, transparent 40px, rgba(255,255,255,0.012) 40px, rgba(255,255,255,0.012) 41px),
+    repeating-linear-gradient(-60deg, transparent, transparent 40px, rgba(255,255,255,0.012) 40px, rgba(255,255,255,0.012) 41px),
+    repeating-linear-gradient(0deg,   transparent, transparent 40px, rgba(255,255,255,0.008) 40px, rgba(255,255,255,0.008) 41px);
+  color:var(--text-primary);
   min-height:100vh;
   display:flex;
   align-items:center;
@@ -31,29 +52,39 @@ body{
 }
 
 .card{
-  background:var(--card);
+  background:var(--bg-surface);
+  border:1px solid var(--border-subtle);
   width:100%;
   max-width:720px;
   padding:20px;
   border-radius:16px;
-  box-shadow:0 15px 35px rgba(0,0,0,.4);
+  box-shadow:var(--shadow-card), var(--shadow-gold);
   position:relative;
 }
 
 .version{
   text-align:center;
-  font-size:.7rem;
-  color:var(--muted);
+  font-family:var(--font-mono);
+  font-size:.65rem;
+  letter-spacing:1.5px;
+  color:var(--text-faint);
   margin-bottom:6px;
-  font-style:italic;
 }
 
-h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
+h1{
+  text-align:center;
+  font-family:var(--font-display);
+  font-size:1.5rem;
+  font-weight:600;
+  color:var(--text-primary);
+  margin-bottom:4px;
+}
 
 .subtitle{
   text-align:center;
-  color:var(--muted);
-  font-size:.85rem;
+  color:var(--text-muted);
+  font-family:var(--font-body);
+  font-size:.875rem;
   margin-bottom:14px;
 }
 
@@ -75,9 +106,9 @@ h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
   display:block;
   width:22px;
   height:2px;
-  background:var(--muted);
+  background:var(--text-muted);
   border-radius:2px;
-  transition:.2s;
+  transition:.2s ease;
 }
 
 .burger-btn:hover span{
@@ -88,9 +119,9 @@ h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
   position:absolute;
   top:46px;
   right:16px;
-  background:#0e2237;
-  border:1px solid rgba(212,175,55,.3);
-  border-radius:10px;
+  background:var(--bg-elevated);
+  border:1px solid var(--border-gold);
+  border-radius:12px;
   overflow:hidden;
   z-index:100;
   min-width:180px;
@@ -105,20 +136,21 @@ h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
   width:100%;
   background:none;
   border:none;
-  color:var(--text);
+  color:var(--text-primary);
   padding:12px 16px;
   text-align:left;
-  font-size:.85rem;
+  font-size:.875rem;
   cursor:pointer;
+  transition:.2s ease;
 }
 
 .dropdown button:hover{
-  background:rgba(212,175,55,.1);
+  background:var(--gold-glow);
   color:var(--gold);
 }
 
 .dropdown button+button{
-  border-top:1px solid rgba(255,255,255,.06);
+  border-top:1px solid var(--border-subtle);
 }
 
 /* Top Controls */
@@ -130,13 +162,14 @@ h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
 
 .reset-top{
   flex:1;
-  background:none;
-  border:1px solid var(--muted);
-  color:var(--muted);
+  background:transparent;
+  border:1px solid var(--border-mid);
+  color:var(--text-muted);
   padding:8px;
   border-radius:8px;
-  font-size:.8rem;
+  font-size:.8125rem;
   cursor:pointer;
+  transition:.2s ease;
 }
 
 .reset-top:hover{
@@ -146,14 +179,17 @@ h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
 
 .progress-text{
   text-align:center;
-  font-size:.9rem;
+  font-family:var(--font-mono);
+  font-size:.8125rem;
+  letter-spacing:.5px;
+  color:var(--text-muted);
   margin-bottom:8px;
 }
 
 .progress-bar{
-  height:6px;
-  background:#1d3a56;
-  border-radius:6px;
+  height:4px;
+  background:rgba(255,255,255,0.06);
+  border-radius:4px;
   overflow:hidden;
   margin-bottom:18px;
 }
@@ -161,40 +197,94 @@ h1{text-align:center;font-size:1.3rem;margin-bottom:4px}
 .progress-fill{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,var(--gold),#f0d777);
-  transition:width .3s ease;
+  background:linear-gradient(90deg,var(--gold-mid),var(--gold));
+  transition:width .5s ease;
 }
 
 /* Dua */
 .dua-title{
-  font-size:.85rem;
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
   margin-top:8px;
   color:var(--gold);
 }
 
 .dua{
-  font-size:.85rem;
-  line-height:1.6;
+  font-size:.875rem;
+  line-height:1.625;
   margin-top:6px;
+  color:var(--text-muted);
 }
 
 .dua .arabic{
   direction:rtl;
-  font-size:1rem;
+  font-size:1.35rem;
+  line-height:1.9;
   margin-bottom:8px;
-  color:#fff;
+  color:var(--text-primary);
+}
+
+.dua .arabic.script-indopak{
+  font-family:'Noto Nastaliq Urdu', serif;
+  font-size:1.2rem;
+  line-height:2.4;
+}
+
+.dua .arabic.script-uthmani{
+  font-family:'Scheherazade New', serif;
+  font-size:1.5rem;
+  line-height:2;
+}
+
+/* Script toggle pill */
+.script-toggle{
+  display:inline-flex;
+  gap:0;
+  border:1px solid var(--border-gold);
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+
+.script-btn{
+  background:transparent;
+  border:none;
+  color:var(--text-muted);
+  font-family:var(--font-mono);
+  font-size:.65rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:5px 14px;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.script-btn:first-child{
+  border-right:1px solid var(--border-gold);
+}
+
+.script-btn.active{
+  background:var(--gold-glow);
+  color:var(--gold);
 }
 
 details{
   margin-top:6px;
-  font-size:.8rem;
-  color:var(--muted);
+  font-size:.875rem;
+  color:var(--text-muted);
 }
 
 details summary{
   cursor:pointer;
   color:var(--gold);
   margin-bottom:4px;
+  transition:.2s ease;
+}
+
+details summary:hover{
+  opacity:.8;
 }
 
 /* Simple Mode */
@@ -206,19 +296,31 @@ details summary{
 
 .simple-button{
   margin:14px 0;
-  padding:14px;
+  padding:14px 24px;
   width:100%;
-  font-size:1rem;
-  border-radius:10px;
+  font-size:.9375rem;
+  font-weight:600;
+  border-radius:8px;
   border:none;
   background:var(--gold);
-  color:#0b1c2d;
+  color:var(--bg-void);
   cursor:pointer;
+  transition:.2s ease;
+  letter-spacing:.5px;
+}
+
+.simple-button:hover:not(:disabled){
+  opacity:.9;
+}
+
+.simple-button:active:not(:disabled){
+  transform:scale(0.97);
 }
 
 .simple-button:disabled{
-  background:#2a4a66;
-  color:#4a6a88;
+  background:var(--bg-elevated);
+  color:var(--text-faint);
+  border:1px solid var(--border-subtle);
   cursor:not-allowed;
 }
 
@@ -238,8 +340,8 @@ details summary{
 .modal-overlay.open{display:flex;}
 
 .modal{
-  background:#0e2237;
-  border:1px solid rgba(212,175,55,.3);
+  background:var(--bg-surface);
+  border:1px solid var(--border-gold);
   border-radius:16px;
   padding:24px;
   width:100%;
@@ -248,21 +350,23 @@ details summary{
 }
 
 .modal h2{
-  font-size:1rem;
+  font-family:var(--font-display);
+  font-size:1.125rem;
+  font-weight:600;
   color:var(--gold);
   margin-bottom:12px;
 }
 
 .modal p{
-  font-size:.85rem;
-  color:var(--muted);
-  line-height:1.6;
+  font-size:.875rem;
+  color:var(--text-muted);
+  line-height:1.625;
 }
 
 .modal ol{
-  font-size:.85rem;
-  color:var(--muted);
-  line-height:1.8;
+  font-size:.875rem;
+  color:var(--text-muted);
+  line-height:1.9;
   padding-left:18px;
 }
 
@@ -276,10 +380,11 @@ details summary{
   right:14px;
   background:none;
   border:none;
-  color:var(--muted);
+  color:var(--text-faint);
   font-size:1.2rem;
   cursor:pointer;
   line-height:1;
+  transition:.2s ease;
 }
 
 .modal-close:hover{color:var(--gold);}
@@ -288,19 +393,22 @@ details summary{
 .footer{
   margin-top:20px;
   padding-top:14px;
-  border-top:1px solid rgba(255,255,255,.07);
+  border-top:1px solid var(--border-subtle);
   text-align:center;
-  font-size:.75rem;
-  color:var(--muted);
+  font-family:var(--font-mono);
+  font-size:.7rem;
+  letter-spacing:.5px;
+  color:var(--text-faint);
 }
 
 .footer a{
   color:var(--gold);
   text-decoration:none;
+  transition:.2s ease;
 }
 
 .footer a:hover{
-  text-decoration:underline;
+  opacity:.8;
 }
 </style>
 </head>
@@ -368,15 +476,21 @@ details summary{
 
 <script>
 let simpleCount=JSON.parse(localStorage.getItem("simpleCount"))||0;
+let scriptStyle=localStorage.getItem("scriptStyle")||"indopak";
 
 const progressText=document.getElementById("progressText");
 const progressFill=document.getElementById("progressFill");
 const simpleDuaContainer=document.getElementById("simpleDuaContainer");
 const prayTwoBtn=document.getElementById("prayTwoBtn");
 
-const duaHTML=`<div class="dua-title">Dua (to be prayed after every 4 rakaats of Taraweeh)</div>
+function buildDuaHTML(){
+  return `<div class="dua-title">Dua (to be prayed after every 4 rakaats of Taraweeh)</div>
 <div class="dua">
-<div class="arabic">
+<div class="script-toggle">
+  <button class="script-btn${scriptStyle==="indopak"?" active":""}" data-script="indopak">Indopak</button>
+  <button class="script-btn${scriptStyle==="uthmani"?" active":""}" data-script="uthmani">Uthmani</button>
+</div>
+<div class="arabic script-${scriptStyle}">
 سُبْحَانَ ذِي المُلْكِ وَالمَلَكُوتِ سُبْحَانَ ذِي العِزَّتِ وَالعَظَمَةِ وَالهَيْبَةِ وَالقُدْرَةِ<br>
 وَالكِبْرِيَاءِ وَالجَبَرُوتِ سُبْحَانَ المَلِكِ الحَيِّ الَّذِي لَا يَنَامُ وَلَا يَمُوتُ سُبُّوحٌ قُدُّوسٌ<br>
 رَبُّنَا وَرَبُّ المَلَآءِكَةِ وَالرُّوحِ اَلَّلهُمَّ اَجِرْنَا مِنَ النَّارِ يَا مُجِيرُ يَا مُجِيرُ يَا مُجِير
@@ -388,6 +502,22 @@ Infinite Glory be to the Absolute Lord of the hidden and manifest (existential r
 </div>
 </details>
 </div>`;
+}
+
+// Handle script toggle via event delegation (dua is dynamically inserted)
+document.addEventListener("click",(e)=>{
+  const btn=e.target.closest("[data-script]");
+  if(!btn)return;
+  scriptStyle=btn.dataset.script;
+  localStorage.setItem("scriptStyle",scriptStyle);
+  // Update toggle button states
+  document.querySelectorAll("[data-script]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.script===scriptStyle);
+  });
+  // Update arabic text class
+  const arabicEl=simpleDuaContainer.querySelector(".arabic");
+  if(arabicEl)arabicEl.className=`arabic script-${scriptStyle}`;
+});
 
 function updateProgress(count){
   progressText.textContent=count+" / 20 completed";
@@ -401,7 +531,7 @@ prayTwoBtn.onclick=()=>{
   updateProgress(simpleCount);
 
   if(simpleCount%4===0){
-    simpleDuaContainer.innerHTML=duaHTML;
+    simpleDuaContainer.innerHTML=buildDuaHTML();
   }else{
     simpleDuaContainer.innerHTML="";
   }
@@ -449,7 +579,7 @@ document.getElementById("homeModal").onclick=(e)=>{
 // Initialize
 updateProgress(simpleCount);
 if(simpleCount>0&&simpleCount%4===0){
-  simpleDuaContainer.innerHTML=duaHTML;
+  simpleDuaContainer.innerHTML=buildDuaHTML();
 }
 </script>
 </body>
